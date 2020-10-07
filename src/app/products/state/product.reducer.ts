@@ -101,5 +101,23 @@ export const productReducer = createReducer<IProductState>(
 			products: [],
 			error: action.error
 		}
+	}),
+	on(ProductActions.updateProductSuccess, (state, action): IProductState => {
+		const updatedProducts = state.products.map(
+			item => action.product.id === item.id ? action.product : item
+		);
+
+		return {
+			...state,
+			products: updatedProducts,
+			currentProductId: action.product.id,
+			error: ''
+		}
+	}),
+	on(ProductActions.updateProductFailure, (state, action): IProductState => {
+		return {
+			...state,
+			error: action.error
+		}
 	})
 );
