@@ -4,7 +4,6 @@ import { Product } from '../product';
 import * as AppState from '../../state/app.state';
 
 import * as ProductActions from './product.actions';
-import { buffer } from 'rxjs/operators';
 
 export interface State extends AppState.State {
 	products: IProductState;
