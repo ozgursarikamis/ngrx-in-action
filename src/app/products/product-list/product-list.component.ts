@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { Product } from '../product';
-import { ProductService } from '../product.service';
 import { getCurrentProduct, getProducts, getShowProductCode, State } from '../state/product.reducer';
 
 import * as ProductActions from '../state/product.actions';
@@ -18,22 +17,15 @@ export class ProductListComponent implements OnInit {
   pageTitle = 'Products';
   errorMessage: string;
 
-  displayCode: boolean;
-
   products: Product[];
   products$: Observable<Product[]>;
 
-  // Used to highlight the selected product in the list
-  selectedProduct: Product | null;
+  selectedProduct$: Observable<Product>;
+  displayCode$: Observable<boolean>;
 
-  constructor(private productService: ProductService, private store: Store<State>) { }
+  constructor(private store: Store<State>) { }
 
   ngOnInit(): void {
-	  //TODO: Unsubscribe this:
-    this.store.select(getCurrentProduct).subscribe(
-      currentProduct => this.selectedProduct = currentProduct
-    );
-
 	//? BEFORE EFFECTS:
     // this.productService.getProducts().subscribe({
     //   next: (products: Product[]) => this.products = products,
@@ -44,16 +36,11 @@ export class ProductListComponent implements OnInit {
 	this.products$ = this.store.select(getProducts);
 	this.store.dispatch(ProductActions.loadProducts());
 	
-	//TODO: Unsubscribe this:
-	this.store.select(getShowProductCode).subscribe(showProductCode => {
-		// if (products) { 
-		// 	this.displayCode = products.showProductCode;
-		// }
-
-		// we do  not need to check if `products` is valid,
-		// because we defined initial state:
-		this.displayCode = showProductCode;
-	});
+	//* TODO Unsubscribe done:
+	this.selectedProduct$ = this.store.select(getCurrentProduct);
+	
+	//* TODO Unsubscribe done:
+	this.displayCode$ = this.store.select(getShowProductCode);
   }
 
   checkChanged(): void {
