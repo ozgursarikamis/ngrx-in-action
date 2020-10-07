@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import { State } from '../state/product.reducer';
+import { getShowProductCode, State } from '../state/product.reducer';
 
 @Component({
   selector: 'pm-product-list',
@@ -37,14 +37,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
 	});
 	
 	//TODO: Unsubscribe this:
-	this.store.select('products').subscribe(products => {
+	this.store.select(getShowProductCode).subscribe(showProductCode => {
 		// if (products) { 
 		// 	this.displayCode = products.showProductCode;
 		// }
 
 		// we do  not need to check if `products` is valid,
 		// because we defined initial state:
-		this.displayCode = products.showProductCode;
+		this.displayCode = showProductCode;
 	});
   }
 
