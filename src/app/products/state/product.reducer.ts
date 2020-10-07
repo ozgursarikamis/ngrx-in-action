@@ -12,13 +12,15 @@ export interface State extends AppState.State {
 export interface IProductState {
 	showProductCode: boolean;
 	currentProduct: Product;
-	products: Product[]
+	products: Product[],
+	error: string;
 }
 
 const initialState: IProductState = {
 	showProductCode: true,
 	currentProduct: null,
-	products: []
+	products: [],
+	error: ''
 };
 
 const getProductFeatureState  = createFeatureSelector<IProductState>('products'); 
@@ -38,6 +40,11 @@ export const getCurrentProduct = createSelector(
 export const getProducts = createSelector(
 	getProductFeatureState,
 	state => state.products
+);
+
+export const getError = createSelector(
+	getProductFeatureState,
+	state => state.error
 );
 
 export const productReducer = createReducer<IProductState>(
@@ -75,7 +82,15 @@ export const productReducer = createReducer<IProductState>(
 	on(ProductActions.loadProductsSuccess, (state, action): IProductState => {
 		return {
 			...state,
-			products: action.products
+			products: action.products,
+			error: ''
+		}
+	}),
+	on(ProductActions.loadProductsFailure, (state, action): IProductState => {
+		return {
+			...state,
+			products: [],
+			error: action.error
 		}
 	})
 );
