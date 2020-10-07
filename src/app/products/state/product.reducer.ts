@@ -3,6 +3,8 @@ import { Product } from '../product';
 
 import * as AppState from '../../state/app.state';
 
+import * as ProductActions from './product.actions';
+
 export interface State extends AppState.State {
 	products: IProductState;
 }
@@ -40,7 +42,7 @@ export const getProducts = createSelector(
 
 export const productReducer = createReducer<IProductState>(
 	initialState,
-	on(createAction('[Product] Toggle Product Code'), (state): IProductState => {
+	on(ProductActions.toggleProductCode, (state): IProductState => {
 		console.log('original state :>> ', JSON.stringify(state));
 		return {
 			// showProductCode: !state.showProductCode // Not correct
