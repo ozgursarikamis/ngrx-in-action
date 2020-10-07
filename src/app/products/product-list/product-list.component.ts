@@ -38,9 +38,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
 	
 	//TODO: Unsubscribe this:
 	this.store.select('products').subscribe(products => {
-		if (products) {
-			this.displayCode = products.showProductCode;
-		}
+		// if (products) { 
+		// 	this.displayCode = products.showProductCode;
+		// }
+
+		// we do  not need to check if `products` is valid,
+		// because we defined initial state:
+		this.displayCode = products.showProductCode;
 	});
   }
 
