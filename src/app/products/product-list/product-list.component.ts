@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import { getCurrentProduct, getShowProductCode, State } from '../state/product.reducer';
+import { getCurrentProduct, getProducts, getShowProductCode, State } from '../state/product.reducer';
 
 import * as ProductActions from '../state/product.actions';
 
@@ -21,6 +21,7 @@ export class ProductListComponent implements OnInit {
   displayCode: boolean;
 
   products: Product[];
+  products$: Observable<Product[]>;
 
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
@@ -33,10 +34,15 @@ export class ProductListComponent implements OnInit {
       currentProduct => this.selectedProduct = currentProduct
     );
 
-    this.productService.getProducts().subscribe({
-      next: (products: Product[]) => this.products = products,
-      error: err => this.errorMessage = err
-	});
+	//? BEFORE EFFECTS:
+    // this.productService.getProducts().subscribe({
+    //   next: (products: Product[]) => this.products = products,
+    //   error: err => this.errorMessage = err
+	// });
+
+	//? AFTER EFFECTS:
+	this.products$ = this.store.select(getProducts);
+	this.store.dispatch(ProductActions.loadProducts());
 	
 	//TODO: Unsubscribe this:
 	this.store.select(getShowProductCode).subscribe(showProductCode => {
