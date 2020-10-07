@@ -1,5 +1,5 @@
-import { Product } from './../product';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Product } from '../product';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'pm-product-list',
@@ -14,20 +14,20 @@ export class ProductListComponent {
   @Input() products: Product[];
   @Input() displayCode: boolean;
   @Input() selectedProduct: Product;
-
-  @Output() displayChanged = new EventEmitter<boolean>();
+  @Output() displayCodeChanged = new EventEmitter<boolean>();
   @Output() initializeNewProduct = new EventEmitter<void>();
   @Output() productWasSelected = new EventEmitter<Product>();
 
   checkChanged(): void {
-	  this.displayChanged.emit();
+    this.displayCodeChanged.emit();
   }
 
   newProduct(): void {
-	  this.initializeNewProduct.emit();
+    this.initializeNewProduct.emit();
   }
 
   productSelected(product: Product): void {
-	  this.productWasSelected.emit(product);
+    this.productWasSelected.emit(product);
   }
+
 }
